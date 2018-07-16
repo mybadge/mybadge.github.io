@@ -108,20 +108,25 @@
 
 
 
-  <meta property="og:type" content="website">
-<meta property="og:title" content="mybadge">
-<meta property="og:url" content="http://mybadge.vip/index.html">
+  <meta name="description" content="在iOS开发中 block 是一块重要的知识, 通过对他进行深入的理解, 可以使我们的能力更上一层楼, 下面让我们看一下 block 到底是什么 Block 的本质Block 就是一个里面存储了指向函数体中包含定义 block 时的代码块的函数指针，以及 block 外部上下文变量等信息的结构体 Block是Objc对象吗答案: 是的, 我们可以通过object_getClass 来获取对象的cl">
+<meta name="keywords" content="Tech,iOS">
+<meta property="og:type" content="article">
+<meta property="og:title" content="深度理解Block">
+<meta property="og:url" content="http://mybadge.vip/2018/07/15/block的深度理解/index.html">
 <meta property="og:site_name" content="mybadge">
+<meta property="og:description" content="在iOS开发中 block 是一块重要的知识, 通过对他进行深入的理解, 可以使我们的能力更上一层楼, 下面让我们看一下 block 到底是什么 Block 的本质Block 就是一个里面存储了指向函数体中包含定义 block 时的代码块的函数指针，以及 block 外部上下文变量等信息的结构体 Block是Objc对象吗答案: 是的, 我们可以通过object_getClass 来获取对象的cl">
 <meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-07-16T05:45:16.160Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="mybadge">
+<meta name="twitter:title" content="深度理解Block">
+<meta name="twitter:description" content="在iOS开发中 block 是一块重要的知识, 通过对他进行深入的理解, 可以使我们的能力更上一层楼, 下面让我们看一下 block 到底是什么 Block 的本质Block 就是一个里面存储了指向函数体中包含定义 block 时的代码块的函数指针，以及 block 外部上下文变量等信息的结构体 Block是Objc对象吗答案: 是的, 我们可以通过object_getClass 来获取对象的cl">
 
 
 
 
 
 
-  <link rel="canonical" href="http://mybadge.vip/"/>
+  <link rel="canonical" href="http://mybadge.vip/2018/07/15/block的深度理解/"/>
 
 
 
@@ -131,7 +136,7 @@
   };
 </script>
 
-  <title>mybadge</title>
+  <title>深度理解Block | mybadge</title>
   
 
 
@@ -178,8 +183,7 @@
     
   
 
-  <div class="container sidebar-position-left 
-  page-home">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -220,7 +224,7 @@
         
         
           
-          <li class="menu-item menu-item-home menu-item-active">
+          <li class="menu-item menu-item-home">
     <a href="/" rel="section">
       <i class="menu-item-icon fa fa-fw fa-home"></i> <br />首页</a>
   </li>
@@ -264,9 +268,9 @@
           
           <div id="content" class="content">
             
-  <section id="posts" class="posts-expand">
+
+  <div id="posts" class="posts-expand">
     
-      
 
   
 
@@ -298,11 +302,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/07/15/block的深度理解/" itemprop="url">
-                  深度理解Block
-                </a>
+          <h1 class="post-title" itemprop="name headline">深度理解Block
               
             
           </h1>
@@ -395,9 +395,7 @@
       
 
       
-        
-          
-            <p>在iOS开发中 block 是一块重要的知识, 通过对他进行深入的理解, 可以使我们的能力更上一层楼, 下面让我们看一下 block 到底是什么</p>
+        <p>在iOS开发中 block 是一块重要的知识, 通过对他进行深入的理解, 可以使我们的能力更上一层楼, 下面让我们看一下 block 到底是什么</p>
 <h3 id="Block-的本质"><a href="#Block-的本质" class="headerlink" title="Block 的本质"></a>Block 的本质</h3><p>Block 就是一个里面存储了指向函数体中包含定义 block 时的代码块的函数指针，以及 block 外部上下文变量等信息的结构体</p>
 <h3 id="Block是Objc对象吗"><a href="#Block是Objc对象吗" class="headerlink" title="Block是Objc对象吗"></a>Block是Objc对象吗</h3><p>答案: 是的, 我们可以通过object_getClass 来获取对象的class</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">int a = 10;</span><br><span class="line">void (^block)(void) = ^&#123;</span><br><span class="line">    NSLog(@&quot;a=%d&quot;, a);</span><br><span class="line">&#125;;</span><br><span class="line">    </span><br><span class="line">NSLog(@&quot;%@&quot;, object_getClass(block));</span><br><span class="line">Class tmpClass = class_getSuperclass(object_getClass(block));</span><br><span class="line">while (tmpClass) &#123;</span><br><span class="line">    NSLog(@&quot;%@&quot;, tmpClass);</span><br><span class="line">    tmpClass = class_getSuperclass(tmpClass);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -435,8 +433,6 @@
 </ul>
 <h3 id="结束"><a href="#结束" class="headerlink" title="结束"></a>结束</h3><p>目前先了解这里.</p>
 
-          
-        
       
     </div>
 
@@ -454,368 +450,38 @@
 
     <footer class="post-footer">
       
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mybadge.vip/2018/07/12/First/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="mybadge">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="mybadge">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/07/12/First/" itemprop="url">
-                  咋想的
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2018-07-12 22:37:21" itemprop="dateCreated datePublished" datetime="2018-07-12T22:37:21+08:00">2018-07-12</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2018-07-16 13:49:37" itemprop="dateModified" datetime="2018-07-16T13:49:37+08:00">2018-07-16</time>
-              
-            
-          </span>
-
+        <div class="post-tags">
           
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/iOS/" itemprop="url" rel="index"><span itemprop="name">iOS</span></a></span>
-
-                
-                
-              
-            </span>
+            <a href="/tags/Tech/" rel="tag"># Tech</a>
           
-
+            <a href="/tags/iOS/" rel="tag"># iOS</a>
           
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
         </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>有点无从下手, 有时考虑的很多, 会错失很多机会, 活在当下, 说走就走, 男子汉就要洒脱.</p>
-<h2 id="为什么搭建博客"><a href="#为什么搭建博客" class="headerlink" title="为什么搭建博客"></a>为什么搭建博客</h2><p>想记录一下自己的成长, 不想在这么浑浑噩噩. 开始有点难, 但不开始就永远没有开始.</p>
-<h3 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h3><p>没有目标, 就没有动力, 虽然已经过了大半年, 但是想到后半年才是做大事的, 目标一定要有的,  计划产出10篇技术文章, 以总结自己的技术积累</p>
-<h3 id="关于自己"><a href="#关于自己" class="headerlink" title="关于自己"></a>关于自己</h3><p>一个想改变自己的iOS开发工程师.</p>
-<h3 id="期待"><a href="#期待" class="headerlink" title="期待"></a>期待</h3><p>成为一个追求的人, 有自己的底线, 有自己的成就, 有自己的事业.</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ Blog start</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="noopener">Deployment</a></p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
       
 
       
       
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
       
 
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mybadge.vip/2018/07/11/hello-world/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="mybadge">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="mybadge">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/07/11/hello-world/" itemprop="url">
-                  Hello World
-                </a>
-              
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
             
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
+              <a href="/2018/07/12/First/" rel="next" title="咋想的">
+                <i class="fa fa-chevron-left"></i> 咋想的
+              </a>
             
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
             
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2018-07-11 20:36:21" itemprop="dateCreated datePublished" datetime="2018-07-11T20:36:21+08:00">2018-07-11</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2018-07-16 13:46:02" itemprop="dateModified" datetime="2018-07-16T13:46:02+08:00">2018-07-16</time>
-              
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/iOS/" itemprop="url" rel="index"><span itemprop="name">iOS</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
+          </div>
         </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
       
 
       
-        
-          
-            <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="noopener">Deployment</a></p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
       
     </footer>
   </div>
@@ -825,14 +491,19 @@
   </article>
 
 
-    
-  </section>
 
-  
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
           
+
+  
+
+
 
         </div>
         
@@ -853,8 +524,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -927,6 +607,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Block-的本质"><span class="nav-number">1.</span> <span class="nav-text">Block 的本质</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Block是Objc对象吗"><span class="nav-number">2.</span> <span class="nav-text">Block是Objc对象吗</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Block-的内存分布"><span class="nav-number">3.</span> <span class="nav-text">Block 的内存分布</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#结论"><span class="nav-number">3.1.</span> <span class="nav-text">结论</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Block里有外部变量"><span class="nav-number">4.</span> <span class="nav-text">Block里有外部变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#结束"><span class="nav-number">5.</span> <span class="nav-text">结束</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -1061,6 +757,10 @@
 
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.3.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.3.0"></script>
+
+
 
   
 
