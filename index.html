@@ -281,6 +281,285 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mybadge.vip/2018/08/12/storyboard/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="mybadge">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="mybadge">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/12/storyboard/" itemprop="url">
+                  iOS StoryBoard 优雅创建控制器方式
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2018-08-12 22:22:22 / 修改时间：22:28:42" itemprop="dateCreated datePublished" datetime="2018-08-12T22:22:22+08:00">2018-08-12</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/iOS/" itemprop="url" rel="index"><span itemprop="name">iOS</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="iOS-StoryBoard-优雅创建控制器方式"><a href="#iOS-StoryBoard-优雅创建控制器方式" class="headerlink" title="iOS StoryBoard 优雅创建控制器方式"></a>iOS StoryBoard 优雅创建控制器方式</h2><p>我的项目中使用到了<strong>StoryBoard</strong>, 我也是喜欢上了这种创建页面的方式, 所见即所得, 每当产品让我改页面的时候, 我都说分分钟就好. 不用在一坨代码中找一个label, 然后修改其颜色, 改颜色几秒钟, 找代码却找了两分钟.</p>
+<h3 id="StoryBoard的优点"><a href="#StoryBoard的优点" class="headerlink" title="StoryBoard的优点"></a>StoryBoard的优点</h3><ul>
+<li>创建快, 容易上手</li>
+<li>页面直观</li>
+<li>页面逻辑关系清晰</li>
+<li>TableViewController的Static.Cell功能</li>
+</ul>
+<h3 id="StoryBoard的缺点"><a href="#StoryBoard的缺点" class="headerlink" title="StoryBoard的缺点"></a>StoryBoard的缺点</h3><ul>
+<li>StoryBoard内容多的时候加载慢, 这个是所有程序员所不能忍受的.</li>
+<li>StoryBoard的segue乱, 页面少的时候还好, 一旦多起来,那个线会像蜘蛛网一样, 蜘蛛网还好, 还是有规律的, StoryBoard就是乱的不得了了</li>
+<li>StoryBoard的segue不灵活, 使用起来比较麻烦, 需要配置segue.identifier, 属于是硬编码, 有时候很容易配置错</li>
+<li>页面间传递参数的时候麻烦, 一个方法里写跳转逻辑, 另一个方法里写参数传递, 一个控制中多个跳转的时候, 还要判断segue.identifier 这种写法我真的是受不了.</li>
+<li>UIStoryBoard方式创建麻烦, 创建控制器之前先创建一个UIStoryBoard对象, 然后在根据StoryBoard.identifier去创建, 标识符的配置,也是硬编码.</li>
+</ul>
+<h3 id="优雅的使用StoryBoard"><a href="#优雅的使用StoryBoard" class="headerlink" title="优雅的使用StoryBoard"></a>优雅的使用StoryBoard</h3><p>基于以上的啰嗦, 我在想是不是可以, 像纯代码创建控制器的方式那样创建StoryBoard的VC呢, 像 CustomViewController.creatVC() 这样是不是就和原来的用法一样了, 既然想到了, 那就去实现以下吧, 正好可以用Swift来实现一下. 想要的效果</p>
+<pre><code>let vc = CustomViewController.creatVC()
+vc.model = model
+navigationController?.pushViewController(vc, animated: true)
+</code></pre><h3 id="我的思路"><a href="#我的思路" class="headerlink" title="我的思路"></a>我的思路</h3><ul>
+<li>分模块拆分StoryBoard, 这样可以减少StoryBoard的体积, 避免加载慢的问题</li>
+<li>segue只是做业务之间的逻辑显示, 不用它来做跳转, 或者不用它</li>
+<li><p>StoryBoard.identifier的约定, 约定所有的StoryBoard.identifier为控制器类名, 方便统一创建VC, 也不用纠结叫什么, 主要也是怕失误的时候写错, 我一般是写上类名的时候, 直接copy一下类名放到identifier上.</p>
+<pre><code>let sb = UIStoryboard(name: &quot;storyBoardName&quot;, bundle: nil)
+   let vc = sb.instantiateViewController(withIdentifier: &quot;storyboardId&quot;) as! CustomerController
+</code></pre></li>
+<li>根据以上代码分析出需要, storyBoardName, storyboardId, 两个变量, storyboardId就是类名, 可以直接通过类名获得, 但是这个storyBoardName怎么获取呢?</li>
+<li>通过属性, 好像是不行, 因为创建控制之前还没有属性, 类属性, 我也不想每个控制器都写一下, 而且也觉得不是一个好的方法, 接下来我就想到了用协议, 协议中定义一个方法, 让它返回StoryBoard name.</li>
+</ul>
+<h3 id="我的实现"><a href="#我的实现" class="headerlink" title="我的实现"></a>我的实现</h3><pre><code>/// 这里可以把StoryBoard以模块划分,
+enum StoryBoardName: String {
+    case none = &quot;&quot;
+    case main = &quot;Main&quot;
+    case project = &quot;Project&quot;
+    case login = &quot;Login&quot;
+    case other = &quot;Other&quot;
+    case mine = &quot;Mine&quot;
+}
+
+protocol StoryBoardDelegate {
+    static func storyBoardName() -&gt; StoryBoardName
+}
+
+protocol ClassNameDelete {
+    static func className() -&gt; String
+}
+
+
+extension UIViewController: ClassNameDelete {
+    static func className() -&gt; String {
+        if let className = classForCoder().description().components(separatedBy: &quot;.&quot;).last {
+            return className
+        } else {
+            return classForCoder().description().components(separatedBy: &quot;.&quot;).first!
+        }
+    }
+}
+
+
+extension BaseViewController {
+
+    /// 通用创建VC方式
+    class func creatVC() -&gt; Self {
+
+        let type = self.storyBoardName()
+        if type == .none {
+            return self.init()
+        } else {
+            if let vc = UIStoryboard.initVC(classType: self) {
+                return vc
+            } else {
+                debugPrint(&quot;className=\(className())创建失败&quot;)
+                return self.init()
+            }
+        }
+    }
+}
+
+extension UIStoryboard {
+    /// 根据类名创建 由StoryBoard 创建的控制器.
+    class func initVC&lt;T&gt;(classType: T.Type) -&gt; T? where T: ClassNameDelete, T: StoryBoardDelegate {
+        let name = T.storyBoardName()
+        let sb = UIStoryboard.init(name: name.rawValue, bundle: nil)
+        let vc = sb.instantiateVC(classType: classType)
+        return vc
+    }
+
+    func instantiateVC&lt;T&gt;(classType: T.Type) -&gt; T? where T: ClassNameDelete {
+        let className = T.className()
+        let vc = instantiateViewController(withIdentifier: className)
+        return vc as? T
+    }
+}
+</code></pre><h3 id="具体使用"><a href="#具体使用" class="headerlink" title="具体使用"></a>具体使用</h3><pre><code>/// 在基类中实现这个协议
+class BaseViewController: UIViewController, StoryBoardDelegate {
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+    }
+
+    class func storyBoardName() -&gt; StoryBoardName {
+        return .none
+    }
+} 
+
+/// 子类中实现, 若是纯代码方式创建则不需要实现这个方法.
+class TestView1Controller: BaseViewController {
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        title = &quot;TestView1&quot;
+    }
+
+    override static func storyBoardName() -&gt; StoryBoardName {
+        return .main
+    }
+
+    @IBAction func btnToTest2Action(_ sender: UIButton) {
+        let vc = TestView2Controller.creatVC()
+        navigationController?.pushViewController(vc, animated: true)
+    }
+}
+</code></pre><h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>自我感觉使用起来比较方便, 若是谁有更好的方式, 或可以优化的地方, 欢迎交流.<br><a href="https://github.com/mybadge/CreatVCDemo" target="_blank" rel="noopener">代码Demo</a></p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://mybadge.vip/2018/07/15/block的深度理解/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -869,7 +1148,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">3</span>
+                    <span class="site-state-item-count">4</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
