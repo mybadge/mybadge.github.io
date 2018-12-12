@@ -1,0 +1,973 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=6.3.0" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.3.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.3.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.3.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.3.0" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '6.3.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="Swift GCD 了解一下1. GCD 简介GCD是苹果开发的多线程编程的解决方案，通过简单的API就可以实现创建新线程去执行我们需要执行的任务，不需要我们手动地创建和管理线程，只需要创建队列和相应的函数配合使用就行。它的API包含在libdispatch库中。 GCD全称Grand Central Dispatch，是Apple提供的一套底层API，提供了一种新的方法来进行并发程序编写。GCD">
+<meta name="keywords" content="Tech,iOS">
+<meta property="og:type" content="article">
+<meta property="og:title" content="GCD 了解一下">
+<meta property="og:url" content="http://mybadge.vip/2018/12/12/swift-gcd/index.html">
+<meta property="og:site_name" content="mybadge">
+<meta property="og:description" content="Swift GCD 了解一下1. GCD 简介GCD是苹果开发的多线程编程的解决方案，通过简单的API就可以实现创建新线程去执行我们需要执行的任务，不需要我们手动地创建和管理线程，只需要创建队列和相应的函数配合使用就行。它的API包含在libdispatch库中。 GCD全称Grand Central Dispatch，是Apple提供的一套底层API，提供了一种新的方法来进行并发程序编写。GCD">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-12-12T14:18:16.629Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="GCD 了解一下">
+<meta name="twitter:description" content="Swift GCD 了解一下1. GCD 简介GCD是苹果开发的多线程编程的解决方案，通过简单的API就可以实现创建新线程去执行我们需要执行的任务，不需要我们手动地创建和管理线程，只需要创建队列和相应的函数配合使用就行。它的API包含在libdispatch库中。 GCD全称Grand Central Dispatch，是Apple提供的一套底层API，提供了一种新的方法来进行并发程序编写。GCD">
+
+
+
+
+
+
+  <link rel="canonical" href="http://mybadge.vip/2018/12/12/swift-gcd/"/>
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>GCD 了解一下 | mybadge</title>
+  
+
+
+
+	<div id="vk_api_transport"></div>
+	<script type="text/javascript">
+		window.vkAsyncInit = function() {
+			VK.init({
+				apiId: 6660397
+			});
+
+			
+				VK.Widgets.Like("vk_like", {type: "mini", height: 20});
+			
+
+			
+				VK.Widgets.Comments("vk_comments", {limit: 10, attach: "*"});
+			
+		};
+		setTimeout(function() {
+			var el = document.createElement("script");
+			el.type = "text/javascript";
+			el.src = "//vk.com/js/api/openapi.js";
+			el.async = true;
+			document.getElementById("vk_api_transport").appendChild(el);
+		}, 0);
+	</script>
+
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?d837a07aa04213208d738aa9616477f7";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">mybadge</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">要明白你想要的是什么</p>
+      
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br />首页</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />归档</a>
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mybadge.vip/2018/12/12/swift-gcd/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="mybadge">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="mybadge">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">GCD 了解一下
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2018-12-12 19:26:01 / 修改时间：22:18:16" itemprop="dateCreated datePublished" datetime="2018-12-12T19:26:01+08:00">2018-12-12</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/iOS/" itemprop="url" rel="index"><span itemprop="name">iOS</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon"
+            >
+            <i class="fa fa-eye"></i>
+             阅读次数： 
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="Swift-GCD-了解一下"><a href="#Swift-GCD-了解一下" class="headerlink" title="Swift GCD 了解一下"></a>Swift GCD 了解一下</h2><h4 id="1-GCD-简介"><a href="#1-GCD-简介" class="headerlink" title="1. GCD 简介"></a>1. GCD 简介</h4><p>GCD是苹果开发的多线程编程的解决方案，通过简单的API就可以实现创建新线程去执行我们需要执行的任务，不需要我们手动地创建和管理线程，只需要创建队列和相应的函数配合使用就行。它的API包含在libdispatch库中。</p>
+<p>GCD全称Grand Central Dispatch，是Apple提供的一套底层API，提供了一种新的方法来进行并发程序编写。GCD有点像NSOperationQueue，但它比NSOpertionQueue更底层更高效，并且它不属于Cocoa框架。GCD的API很大程度上基于block，当然，GCD也可以脱离block来使用，比如使用传统C机制提供函数指针和上下文指针。实践证明，当配合block使用时，GCD非常简单易用且能发挥其最大能力。</p>
+<h4 id="2-GCD-的优势"><a href="#2-GCD-的优势" class="headerlink" title="2. GCD 的优势"></a>2. GCD 的优势</h4><ul>
+<li>GCD是苹果公司为多核的并行运算提出的解决方案</li>
+<li>GCD会自动利用更多的CPU内核（比如双核、四核）</li>
+<li>GCD会自动管理线程的生命周期（创建线程、调度任务、销毁线程）</li>
+<li><p>程序员只需要告诉GCD想要执行什么任务，不需要编写任何线程管理代码</p>
+<a id="more"></a>
+</li>
+</ul>
+<h4 id="3-GCD-任务和队列"><a href="#3-GCD-任务和队列" class="headerlink" title="3. GCD 任务和队列"></a>3. GCD 任务和队列</h4><p><strong>任务（Task）:</strong> 就是执行操作的意思，换句话说就是你在线程中执行的那段代码。在 GCD 中是放在 block 中的。执行任务有两种方式：<strong>同步执行（sync）</strong>和 <strong>异步执行（async）</strong>。两者的主要区别是：<strong>是否等待队列的任务执行结束，以及是否具备开启新线程的能力</strong>。</p>
+<ul>
+<li>同步执行（sync）：</li>
+</ul>
+<ul>
+<li>同步添加任务到指定的队列中，在添加的任务执行结束之前，会一直等待，直到队列里面的任务完成之后再继续执行。</li>
+<li>只能在当前线程中执行任务，不具备开启新线程的能力。</li>
+</ul>
+<ul>
+<li>异步执行（async）：</li>
+</ul>
+<ul>
+<li>异步添加任务到指定的队列中，它不会做任何等待，可以继续执行任务。</li>
+<li>可以在新的线程中执行任务，具备开启新线程的能力(但是并不一定开启新线程, 跟任务所指定的队列类型有关)。</li>
+</ul>
+<p><strong>队列（Queue）</strong> 这里的队列指执行任务的等待队列，即用来存放任务的队列。队列是一种特殊的线性表，采用 FIFO（先进先出）的原则，即新任务总是被插入到队列的末尾，而读取任务的时候总是从队列的头部开始读取。每读取一个任务，则从队列中释放一个任务。</p>
+<p><strong>GCD中队列的种类</strong></p>
+<ul>
+<li><strong>串行队列（Serial Dispatch Queue）:</strong> 每次只有一个任务被执行。让任务一个接着一个地执行。（只开启一个线程，一个任务执行完毕后，再执行下一个任务）</li>
+<li><strong>并发队列（Concurrent Dispatch Queue）:</strong> 可以让多个任务并发（同时）执行。（可以开启多个线程，并且同时执行任务）, 并发队列的并发功能只有在异步（dispatch_async）函数下才有效</li>
+</ul>
+<h4 id="4-GCD-的简单使用"><a href="#4-GCD-的简单使用" class="headerlink" title="4.GCD 的简单使用"></a>4.GCD 的简单使用</h4><ul>
+<li>创建一个队列（串行队列或并发队列）</li>
+<li>将任务追加到任务的等待队列中，然后系统就会根据任务类型执行任务（同步执行或异步执行）</li>
+</ul>
+<p><strong>GCD创建队列</strong></p>
+<ul>
+<li>主队列(串行队列)</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">let mainQueue = DispatchQueue.main</span><br></pre></td></tr></table></figure>
+<ul>
+<li>全局并行队列</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">let globalQueue = DispatchQueue.global(qos: .default)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>创建串行队列</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">let serialQueue = DispatchQueue(label: &quot;vip.mybadge&quot;)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>创建并行队列</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">let concurQueue = DispatchQueue(label: &quot;vip.mybadge&quot;, attributes: .concurrent)</span><br></pre></td></tr></table></figure>
+<p><strong>执行任务</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">func task(i: Int) &#123;</span><br><span class="line">    print(&quot;\(i) thread = \(Thread.current)&quot;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">for i in 0..&lt;100 &#123;</span><br><span class="line">    serialQueue.async &#123;</span><br><span class="line">        task(i: i)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line">11 thread = &lt;NSThread: 0x60000373fa00&gt;&#123;number = 5, name = (null)&#125;</span><br><span class="line">12 thread = &lt;NSThread: 0x60000373fa00&gt;&#123;number = 5, name = (null)&#125;</span><br><span class="line">13 thread = &lt;NSThread: 0x60000373fa00&gt;&#123;number = 5, name = (null)&#125;</span><br><span class="line">14 thread = &lt;NSThread: 0x60000373fa00&gt;&#123;number = 5, name = (null)&#125;</span><br><span class="line">15 thread = &lt;NSThread: 0x60000373fa00&gt;&#123;number = 5, name = (null)&#125;</span><br><span class="line">16 thread = &lt;NSThread: 0x60000373fa00&gt;&#123;number = 5, name = (null)&#125;</span><br><span class="line">17 thread = &lt;NSThread: 0x60000373fa00&gt;&#123;number = 5, name = (null)&#125;</span><br><span class="line">18 thread = &lt;NSThread: 0x60000373fa00&gt;&#123;number = 5, name = (null)&#125;</span><br><span class="line">19 thread = &lt;NSThread: 0x60000373fa00&gt;&#123;number = 5, name = (null)&#125;</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<p>可以发现在串行队列中， 等待队列的任务执行结束，不具备开启新线程的能力</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">func task(i: Int) &#123;</span><br><span class="line">    print(&quot;\(i) thread = \(Thread.current)&quot;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">for i in 0..&lt;100 &#123;</span><br><span class="line">    globalQueue.async &#123;</span><br><span class="line">        task(i: i)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line">75 thread = &lt;NSThread: 0x600002aef1c0&gt;&#123;number = 5, name = (null)&#125;</span><br><span class="line">76 thread = &lt;NSThread: 0x600002aef1c0&gt;&#123;number = 5, name = (null)&#125;</span><br><span class="line">77 thread = &lt;NSThread: 0x600002aef480&gt;&#123;number = 6, name = (null)&#125;</span><br><span class="line">78 thread = &lt;NSThread: 0x600002aef1c0&gt;&#123;number = 5, name = (null)&#125;</span><br><span class="line">79 thread = &lt;NSThread: 0x600002aef480&gt;&#123;number = 6, name = (null)&#125;</span><br><span class="line">80 thread = &lt;NSThread: 0x600002af1280&gt;&#123;number = 8, name = (null)&#125;</span><br><span class="line">81 thread = &lt;NSThread: 0x600002af16c0&gt;&#123;number = 9, name = (null)&#125;</span><br><span class="line">82 thread = &lt;NSThread: 0x600002af1400&gt;&#123;number = 10, name = (null)&#125;</span><br><span class="line">83 thread = &lt;NSThread: 0x600002af1340&gt;&#123;number = 11, name = (null)&#125;</span><br><span class="line">84 thread = &lt;NSThread: 0x600002af1380&gt;&#123;number = 12, name = (null)&#125;</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<p>可以发现在并行队列中， 不等待队列的任务执行结束，具备开启新线程的能力</p>
+<h4 id="5-DispatchGroup"><a href="#5-DispatchGroup" class="headerlink" title="5. DispatchGroup"></a>5. DispatchGroup</h4><p>如果想等到所有的队列的任务执行完毕再进行后序操作时，可以使用<strong>DispatchGroup</strong>来完成。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">let group = DispatchGroup()</span><br><span class="line">for i in 0..&lt;5 &#123;</span><br><span class="line">    print(&quot;任务\(i+1)下载中...&quot;)</span><br><span class="line">    DispatchQueue.global().async(group: group) &#123;</span><br><span class="line">        Thread.sleep(forTimeInterval: 1)</span><br><span class="line">        print(&quot;任务\(i+1)下载完成&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">group.notify(queue: DispatchQueue.main) &#123;</span><br><span class="line">    print(&quot;任务都下载完成...去更新UI&quot;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>执行结果</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">任务1下载中...</span><br><span class="line">任务2下载中...</span><br><span class="line">任务3下载中...</span><br><span class="line">任务4下载中...</span><br><span class="line">任务5下载中...</span><br><span class="line">任务1下载完成</span><br><span class="line">任务3下载完成</span><br><span class="line">任务5下载完成</span><br><span class="line">任务4下载完成</span><br><span class="line">任务2下载完成</span><br><span class="line">任务都下载完成...去更新UI</span><br></pre></td></tr></table></figure>
+<h4 id="6-DispatchWorkItem"><a href="#6-DispatchWorkItem" class="headerlink" title="6. DispatchWorkItem"></a>6. DispatchWorkItem</h4><p>Swift3新增的类，可以通过此类设置队列执行的任务。相当于把原来GCD中闭包的代码封装到了这里,<br>看一个例子:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">let workItem = DispatchWorkItem &#123;</span><br><span class="line">    for i in 0..&lt;10 &#123;</span><br><span class="line">        print(i)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">DispatchQueue.global().async(execute: workItem)</span><br></pre></td></tr></table></figure>
+<p>看看他的初始化方法    </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">init(qos: DispatchQoS = default, flags: DispatchWorkItemFlags = default,</span><br><span class="line">    block: @escaping () -&gt; Void)</span><br></pre></td></tr></table></figure>
+<p>从初始化方法可以看出，DispatchWorkItem也可以设置优先级，另外还有个参数DispatchWorkItemFlags，来看看DispatchWorkItemFlags的内部组成:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">public struct DispatchWorkItemFlags : OptionSet, RawRepresentable &#123;</span><br><span class="line">    // 相当于之前的栅栏函数</span><br><span class="line">    public static let barrier: DispatchWorkItemFlags</span><br><span class="line">    </span><br><span class="line">    public static let detached: DispatchWorkItemFlags</span><br><span class="line">    </span><br><span class="line">    public static let assignCurrentContext: DispatchWorkItemFlags</span><br><span class="line">    // 没有优先级</span><br><span class="line">    public static let noQoS: DispatchWorkItemFlags</span><br><span class="line">    // 继承Queue的优先级</span><br><span class="line">    public static let inheritQoS: DispatchWorkItemFlags</span><br><span class="line">    // 覆盖Queue的优先级</span><br><span class="line">    public static let enforceQoS: DispatchWorkItemFlags</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="7-Dispatch-barrier"><a href="#7-Dispatch-barrier" class="headerlink" title="7. Dispatch barrier"></a>7. Dispatch barrier</h4><p>可以理解为隔离，还是以文件读写为例，在读取文件时，可以异步访问，但是如果突然出现了异步写入操作，我们想要达到的效果是在进行写入操作的时候，使读取操作暂停，直到写入操作结束，再继续进行读取操作，以保证读取操作获取的是文件的最新内容。</p>
+<p>先看看<strong>不使用barrier</strong>的例子</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">let concurQueue = DispatchQueue(label: &quot;vip.mybadge&quot;, attributes: .concurrent)</span><br><span class="line"></span><br><span class="line">struct File &#123;</span><br><span class="line">    var content = &quot;&quot;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">var file = File()</span><br><span class="line">file.content = &quot;This is a file&quot;</span><br><span class="line"></span><br><span class="line">let writeFileWorkItem = DispatchWorkItem &#123;</span><br><span class="line">    file.content = &quot;This file has been modified.&quot;</span><br><span class="line">    Thread.sleep(forTimeInterval: 1)</span><br><span class="line">    print(&quot;write file&quot;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">let readFileWorkItem = DispatchWorkItem &#123;</span><br><span class="line">    Thread.sleep(forTimeInterval: 1)</span><br><span class="line">    print(&quot;file.content=\(file.content)&quot;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">for _ in 0..&lt;3 &#123;</span><br><span class="line">    concurQueue.async(execute: readFileWorkItem)</span><br><span class="line">&#125;</span><br><span class="line">concurQueue.async(execute: writeFileWorkItem)</span><br><span class="line">for _ in 0..&lt;3 &#123;</span><br><span class="line">    concurQueue.async(execute: readFileWorkItem)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>输出结果</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">file.content=This file has been modified.</span><br><span class="line">write file</span><br><span class="line">file.content=This file has been modified.</span><br><span class="line">file.content=This file has been modified.</span><br><span class="line">file.content=This file has been modified.</span><br><span class="line">file.content=This file has been modified.</span><br><span class="line">file.content=This file has been modified.</span><br></pre></td></tr></table></figure>
+<p>我们期望的结果是，在写文件之前，打印 “This is a file”, 写文件之后打印的是”This file has been modified.”, 上面结果显然不是我们想要的。<br>看一下使用barrier的效果</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">let concurQueue = DispatchQueue(label: &quot;vip.mybadge&quot;, attributes: .concurrent)</span><br><span class="line"></span><br><span class="line">struct File &#123;</span><br><span class="line">    var content = &quot;&quot;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">var file = File()</span><br><span class="line">file.content = &quot;This is a file&quot;</span><br><span class="line"></span><br><span class="line">let writeFileWorkItem = DispatchWorkItem(flags: .barrier) &#123;</span><br><span class="line">    file.content = &quot;This file has been modified.&quot;</span><br><span class="line">    Thread.sleep(forTimeInterval: 1)</span><br><span class="line">    print(&quot;white file&quot;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">let readFileWorkItem = DispatchWorkItem &#123;</span><br><span class="line">    Thread.sleep(forTimeInterval: 1)</span><br><span class="line">    print(&quot;file.content=\(file.content)&quot;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">for _ in 0..&lt;3 &#123;</span><br><span class="line">    concurQueue.async(execute: readFileWorkItem)</span><br><span class="line">&#125;</span><br><span class="line">concurQueue.async(execute: writeFileWorkItem)</span><br><span class="line">for _ in 0..&lt;3 &#123;</span><br><span class="line">    concurQueue.async(execute: readFileWorkItem)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>输出结果</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">file.content=This is a file.</span><br><span class="line">file.content=This is a file.</span><br><span class="line">file.content=This is a file.</span><br><span class="line">write file</span><br><span class="line">file.content=This file has been modified.</span><br><span class="line">file.content=This file has been modified.</span><br><span class="line">file.content=This file has been modified.</span><br></pre></td></tr></table></figure>
+<p>结果符合预期的想法，<strong>barrier</strong>主要用于读写隔离，以保证写入的时候，不被读取。</p>
+<h4 id="8-DispatchSemaphore"><a href="#8-DispatchSemaphore" class="headerlink" title="8. DispatchSemaphore"></a>8. DispatchSemaphore</h4><p>DispatchSemaphore中的信号量,可以解决资源抢占的问题,支持信号的通知和等待.每当发送一个信号通知,则信号量+1;每当发送一个等待信号时信号量-1,如果信号量为0则信号会处于等待状态.直到信号量大于0开始执行.所以我们一般将DispatchSemaphore的value设置为1.</p>
+<h5 id="DispatchSemaphore-线程同步"><a href="#DispatchSemaphore-线程同步" class="headerlink" title="DispatchSemaphore 线程同步"></a>DispatchSemaphore 线程同步</h5><p><strong>线程同步</strong>: 可理解为<strong>线程A</strong>和<strong>线程B</strong>一块配合, <strong>A</strong>执行到一定程度时要依靠<strong>B</strong>的某个结果, 于是停下来, 示意<strong>B</strong>运行; <strong>B</strong>依言执行, 再将结果给<strong>A</strong>; <strong>A</strong>再继续操作.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">/// 信号量的线程同步.</span><br><span class="line">func semaphoreSync() &#123;</span><br><span class="line">    var number = 0</span><br><span class="line">    let semaphoreSignal = DispatchSemaphore(value: 0)</span><br><span class="line">    let globalQueue = DispatchQueue.global()</span><br><span class="line">    </span><br><span class="line">    let workItem = DispatchWorkItem &#123;</span><br><span class="line">        Thread.sleep(forTimeInterval: 1)</span><br><span class="line">        print(&quot;change number, thread=\(Thread.current)&quot;)</span><br><span class="line">        number = 100</span><br><span class="line">        semaphoreSignal.signal()</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    print(&quot;semaphore begin&quot;)</span><br><span class="line">    print(&quot;number = \(number), thread=\(Thread.current)&quot;)</span><br><span class="line">    globalQueue.async(execute: workItem)</span><br><span class="line">    semaphoreSignal.wait()</span><br><span class="line">    print(&quot;number = \(number)&quot;)</span><br><span class="line">    print(&quot;semaphore end&quot;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">semaphoreSync()</span><br></pre></td></tr></table></figure>
+<p>输出</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">semaphore begin</span><br><span class="line">number = 0, thread=&lt;NSThread: 0x6000007ca900&gt;&#123;number = 1, name = main&#125;</span><br><span class="line">change number, thread=&lt;NSThread: 0x6000007e8180&gt;&#123;number = 5, name = (null)&#125;</span><br><span class="line">number = 100</span><br><span class="line">semaphore end</span><br></pre></td></tr></table></figure>
+<p><strong>semaphore end</strong> 是在执行完  number = 100; 之后才打印的。而且输出结果 number 为 100。</p>
+<ul>
+<li>这是因为异步执行不会做任何等待，可以继续执行任务。</li>
+<li>异步执行将workItem追加到队列之后，不做等待，接着去执行<strong>semaphoreSignal.wait()</strong>方法。</li>
+<li>此时 semaphore == 0，当前线程进入等待状态。</li>
+<li>然后，workItem开始执行。workItem执行到<strong>semaphoreSignal.signal()</strong>之后，</li>
+<li>信号量+1，此时 semaphore == 1，<strong>semaphoreSignal.wait()</strong>方法使总信号量减1，正在被阻塞的线程（主线程）恢复继续执行。</li>
+<li>最后打印number = 100，semaphore—end,。</li>
+</ul>
+<p>这样就实现了线程同步，将异步执行任务转换为同步执行任务。</p>
+<h5 id="Dispatch-Semaphore-线程安全和线程同步（为线程加锁）"><a href="#Dispatch-Semaphore-线程安全和线程同步（为线程加锁）" class="headerlink" title="Dispatch Semaphore 线程安全和线程同步（为线程加锁）"></a>Dispatch Semaphore 线程安全和线程同步（为线程加锁）</h5><ul>
+<li><strong>线程安全</strong>：如果你的代码所在的进程中有多个线程在同时运行，而这些线程可能会同时运行这段代码。如果每次运行结果和单线程运行的结果是一样的，而且其他的变量的值也和预期的是一样的，就是线程安全的。否则就是 <strong>非线程安全</strong>的。</li>
+<li>若每个线程中对全局变量、静态变量只有读操作，而无写操作，一般来说，这个全局变量是线程安全的；若有多个线程同时执行写操作（更改变量），一般都需要考虑线程同步，否则的话就可能影响线程安全。</li>
+</ul>
+<p>下面，我们模拟火车票售卖的方式，实现 NSThread 线程安全和解决线程同步问题。</p>
+<p>场景：总共有10张火车票，有两个售卖火车票的窗口，一个是北京火车票售卖窗口，另一个是上海火车票售卖窗口。两个窗口同时售卖火车票，卖完为止。</p>
+<h5 id="非线程安全（不使用semaphore）"><a href="#非线程安全（不使用semaphore）" class="headerlink" title="非线程安全（不使用semaphore）"></a>非线程安全（不使用semaphore）</h5><p>先来看看不考虑线程安全的代码</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">class SaleTicketNotSafe &#123;</span><br><span class="line">    private var ticketSurplusCount = 0</span><br><span class="line">    private let semaphoreSignal = DispatchSemaphore(value: 1)</span><br><span class="line">    private let serialQueue = DispatchQueue(label: &quot;vip.mybadge.dispatch&quot;)</span><br><span class="line">    private let serialQueue2 = DispatchQueue(label: &quot;vip.mybadge.dispatch&quot;)</span><br><span class="line">    </span><br><span class="line">    init(ticketSurplusCount: Int) &#123;</span><br><span class="line">        self.ticketSurplusCount = ticketSurplusCount</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    func startSaleNotSave() &#123;</span><br><span class="line">        print(&quot;current thread=\(Thread.current)&quot;)</span><br><span class="line">        serialQueue.async &#123; [weak self] in</span><br><span class="line">            self?.saleTicketNotSafe()</span><br><span class="line">        &#125;</span><br><span class="line">        serialQueue2.async &#123; [weak self] in</span><br><span class="line">            self?.saleTicketNotSafe()</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    private func saleTicketNotSafe() &#123;</span><br><span class="line">        while true &#123;</span><br><span class="line">            if ticketSurplusCount &gt; 0 &#123;</span><br><span class="line">                ticketSurplusCount -= 1</span><br><span class="line">                print(&quot;剩余票数\(ticketSurplusCount), 窗口:\(Thread.current)&quot;)</span><br><span class="line">                Thread.sleep(forTimeInterval: 1)</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                print(&quot;所有票都售完了&quot;)</span><br><span class="line">                break</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">let saleTicket = SaleTicketNotSafe(ticketSurplusCount: 10)</span><br><span class="line">saleTicket.startSaleNotSave()</span><br></pre></td></tr></table></figure>
+<p>输出结果</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">开始售票  thread=&lt;NSThread: 0x600003802900&gt;&#123;number = 1, name = main&#125;</span><br><span class="line">剩余票数9, 窗口:&lt;NSThread: 0x600003824c00&gt;&#123;number = 6, name = (null)&#125;</span><br><span class="line">剩余票数8, 窗口:&lt;NSThread: 0x6000038157c0&gt;&#123;number = 4, name = (null)&#125;</span><br><span class="line">剩余票数6, 窗口:&lt;NSThread: 0x6000038157c0&gt;&#123;number = 4, name = (null)&#125;</span><br><span class="line">剩余票数7, 窗口:&lt;NSThread: 0x600003824c00&gt;&#123;number = 6, name = (null)&#125;</span><br><span class="line">剩余票数4, 窗口:&lt;NSThread: 0x6000038157c0&gt;&#123;number = 4, name = (null)&#125;</span><br><span class="line">剩余票数4, 窗口:&lt;NSThread: 0x600003824c00&gt;&#123;number = 6, name = (null)&#125;</span><br><span class="line">剩余票数3, 窗口:&lt;NSThread: 0x6000038157c0&gt;&#123;number = 4, name = (null)&#125;</span><br><span class="line">剩余票数2, 窗口:&lt;NSThread: 0x600003824c00&gt;&#123;number = 6, name = (null)&#125;</span><br><span class="line">剩余票数1, 窗口:&lt;NSThread: 0x6000038157c0&gt;&#123;number = 4, name = (null)&#125;</span><br><span class="line">剩余票数0, 窗口:&lt;NSThread: 0x600003824c00&gt;&#123;number = 6, name = (null)&#125;</span><br><span class="line">所有票都售完了</span><br><span class="line">所有票都售完了</span><br></pre></td></tr></table></figure>
+<h5 id="线程安全-使用-semaphore-加锁）"><a href="#线程安全-使用-semaphore-加锁）" class="headerlink" title="线程安全 (使用 semaphore 加锁）"></a>线程安全 (使用 semaphore 加锁）</h5><p>线程安全的代码</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">class SaleTicketSafe &#123;</span><br><span class="line">    private var ticketSurplusCount = 0</span><br><span class="line">    private let semaphoreSignal = DispatchSemaphore(value: 1)</span><br><span class="line">    private let serialQueue = DispatchQueue(label: &quot;vip.mybadge.dispatch&quot;)</span><br><span class="line">    private let serialQueue2 = DispatchQueue(label: &quot;vip.mybadge.dispatch&quot;)</span><br><span class="line">    init(ticketSurplusCount: Int) &#123;</span><br><span class="line">        self.ticketSurplusCount = ticketSurplusCount</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    func startSaleSave() &#123;</span><br><span class="line">        print(&quot;开始售票 thread=\(Thread.current)&quot;)</span><br><span class="line">        serialQueue.async &#123; [weak self] in</span><br><span class="line">            self?.saleTicketSafe()</span><br><span class="line">        &#125;</span><br><span class="line">        serialQueue2.async &#123; [weak self] in</span><br><span class="line">            self?.saleTicketSafe()</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    private func saleTicketSafe() &#123;</span><br><span class="line">        while true &#123;</span><br><span class="line">            semaphoreSignal.wait()</span><br><span class="line">            if ticketSurplusCount &gt; 0 &#123;</span><br><span class="line">                ticketSurplusCount -= 1</span><br><span class="line">                print(&quot;剩余票数\(ticketSurplusCount), 窗口:\(Thread.current)&quot;)</span><br><span class="line">                Thread.sleep(forTimeInterval: 1)</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                semaphoreSignal.signal()</span><br><span class="line">                print(&quot;所有票都售完了&quot;)</span><br><span class="line">                break</span><br><span class="line">            &#125;</span><br><span class="line">            semaphoreSignal.signal()</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">let saleTicket = SaleTicketSafe(ticketSurplusCount: 10)</span><br><span class="line">saleTicket.startSaleSave()</span><br></pre></td></tr></table></figure>
+<p>输出结果</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">开始售票 thread=&lt;NSThread: 0x600001ac6900&gt;&#123;number = 1, name = main&#125;</span><br><span class="line">剩余票数9, 窗口:&lt;NSThread: 0x600001ad4b80&gt;&#123;number = 4, name = (null)&#125;</span><br><span class="line">剩余票数8, 窗口:&lt;NSThread: 0x600001ad8640&gt;&#123;number = 6, name = (null)&#125;</span><br><span class="line">剩余票数7, 窗口:&lt;NSThread: 0x600001ad4b80&gt;&#123;number = 4, name = (null)&#125;</span><br><span class="line">剩余票数6, 窗口:&lt;NSThread: 0x600001ad8640&gt;&#123;number = 6, name = (null)&#125;</span><br><span class="line">剩余票数5, 窗口:&lt;NSThread: 0x600001ad4b80&gt;&#123;number = 4, name = (null)&#125;</span><br><span class="line">剩余票数4, 窗口:&lt;NSThread: 0x600001ad8640&gt;&#123;number = 6, name = (null)&#125;</span><br><span class="line">剩余票数3, 窗口:&lt;NSThread: 0x600001ad4b80&gt;&#123;number = 4, name = (null)&#125;</span><br><span class="line">剩余票数2, 窗口:&lt;NSThread: 0x600001ad8640&gt;&#123;number = 6, name = (null)&#125;</span><br><span class="line">剩余票数1, 窗口:&lt;NSThread: 0x600001ad4b80&gt;&#123;number = 4, name = (null)&#125;</span><br><span class="line">剩余票数0, 窗口:&lt;NSThread: 0x600001ad8640&gt;&#123;number = 6, name = (null)&#125;</span><br><span class="line">所有票都售完了</span><br><span class="line">所有票都售完了</span><br></pre></td></tr></table></figure>
+<p>可以看出，在考虑了线程安全的情况下，使用 DispatchSemaphore 机制之后，得到的票数是正确的，没有出现混乱的情况。我们也就解决了线程安全与线程同步的问题。</p>
+<p><a href="https://www.jianshu.com/p/fc78dab5736f" target="_blank" rel="noopener">参考 Swift 3必看：从使用场景了解GCD新API</a></p>
+<p><a href="https://juejin.im/post/5a4c542b6fb9a045211f17ac" target="_blank" rel="noopener">参考 Swift多线程编程总结</a></p>
+<p><a href="https://juejin.im/post/5bf20f7de51d45619503072c" target="_blank" rel="noopener">参考 线程安全: 互斥锁和自旋锁(10种)</a></p>
+<p><a href="https://juejin.im/post/5a90de68f265da4e9b592b40#heading-24" target="_blank" rel="noopener">参考 iOS多线程：『GCD』详尽总结</a></p>
+<p><a href="https://www.jianshu.com/p/a28c5bbd5b4a" target="_blank" rel="noopener">参考 菜鸟不要怕，看一眼，你就会用GCD，带你装逼带你飞</a></p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Tech/" rel="tag"># Tech</a>
+          
+            <a href="/tags/iOS/" rel="tag"># iOS</a>
+          
+        </div>
+      
+
+      
+      
+        <div class="post-widgets">
+        
+
+        
+          <div class="social-like">
+            
+              <div class="vk_like">
+                <span id="vk_like"></span>
+              </div>
+            
+
+            
+          </div>
+        
+
+        
+        </div>
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/08/12/storyboard/" rel="next" title="iOS StoryBoard 优雅创建控制器方式">
+                <i class="fa fa-chevron-left"></i> iOS StoryBoard 优雅创建控制器方式
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="vk_comments"></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">mybadge</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">5</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                    
+                      
+                    
+                    <span class="site-state-item-count">1</span>
+                    <span class="site-state-item-name">分类</span>
+                  
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">3</span>
+                    <span class="site-state-item-name">标签</span>
+                  
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Swift-GCD-了解一下"><span class="nav-number">1.</span> <span class="nav-text">Swift GCD 了解一下</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-GCD-简介"><span class="nav-number">1.0.1.</span> <span class="nav-text">1. GCD 简介</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-GCD-的优势"><span class="nav-number">1.0.2.</span> <span class="nav-text">2. GCD 的优势</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-GCD-任务和队列"><span class="nav-number">1.0.3.</span> <span class="nav-text">3. GCD 任务和队列</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-GCD-的简单使用"><span class="nav-number">1.0.4.</span> <span class="nav-text">4.GCD 的简单使用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-DispatchGroup"><span class="nav-number">1.0.5.</span> <span class="nav-text">5. DispatchGroup</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-DispatchWorkItem"><span class="nav-number">1.0.6.</span> <span class="nav-text">6. DispatchWorkItem</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-Dispatch-barrier"><span class="nav-number">1.0.7.</span> <span class="nav-text">7. Dispatch barrier</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#8-DispatchSemaphore"><span class="nav-number">1.0.8.</span> <span class="nav-text">8. DispatchSemaphore</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#DispatchSemaphore-线程同步"><span class="nav-number">1.0.8.1.</span> <span class="nav-text">DispatchSemaphore 线程同步</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Dispatch-Semaphore-线程安全和线程同步（为线程加锁）"><span class="nav-number">1.0.8.2.</span> <span class="nav-text">Dispatch Semaphore 线程安全和线程同步（为线程加锁）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#非线程安全（不使用semaphore）"><span class="nav-number">1.0.8.3.</span> <span class="nav-text">非线程安全（不使用semaphore）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#线程安全-使用-semaphore-加锁）"><span class="nav-number">1.0.8.4.</span> <span class="nav-text">线程安全 (使用 semaphore 加锁）</span></a></li></ol></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">mybadge</span>
+
+  
+
+  
+</div>
+
+
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动 v3.7.1</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://theme-next.org">NexT.Gemini</a> v6.3.0</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv" title="总访客量">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="site-pv" title="总访问量">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.3.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.3.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=6.3.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=6.3.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.3.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.3.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.3.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

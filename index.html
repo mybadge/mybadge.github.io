@@ -313,7 +313,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mybadge.vip/2018/08/12/storyboard/">
+    <link itemprop="mainEntityOfPage" href="http://mybadge.vip/2018/12/12/swift-gcd/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="mybadge">
@@ -332,8 +332,8 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/08/12/storyboard/" itemprop="url">
-                  iOS StoryBoard 优雅创建控制器方式
+                <a class="post-title-link" href="/2018/12/12/swift-gcd/" itemprop="url">
+                  GCD 了解一下
                 </a>
               
             
@@ -359,7 +359,7 @@
                 
               
 
-              <time title="创建时间：2018-08-12 22:22:22 / 修改时间：22:29:39" itemprop="dateCreated datePublished" datetime="2018-08-12T22:22:22+08:00">2018-08-12</time>
+              <time title="创建时间：2018-12-12 19:26:01 / 修改时间：22:18:16" itemprop="dateCreated datePublished" datetime="2018-12-12T19:26:01+08:00">2018-12-12</time>
             
 
             
@@ -416,131 +416,197 @@
 
       
         
+          <h2 id="Swift-GCD-了解一下"><a href="#Swift-GCD-了解一下" class="headerlink" title="Swift GCD 了解一下"></a>Swift GCD 了解一下</h2><h4 id="1-GCD-简介"><a href="#1-GCD-简介" class="headerlink" title="1. GCD 简介"></a>1. GCD 简介</h4><p>GCD是苹果开发的多线程编程的解决方案，通过简单的API就可以实现创建新线程去执行我们需要执行的任务，不需要我们手动地创建和管理线程，只需要创建队列和相应的函数配合使用就行。它的API包含在libdispatch库中。</p>
+<p>GCD全称Grand Central Dispatch，是Apple提供的一套底层API，提供了一种新的方法来进行并发程序编写。GCD有点像NSOperationQueue，但它比NSOpertionQueue更底层更高效，并且它不属于Cocoa框架。GCD的API很大程度上基于block，当然，GCD也可以脱离block来使用，比如使用传统C机制提供函数指针和上下文指针。实践证明，当配合block使用时，GCD非常简单易用且能发挥其最大能力。</p>
+<h4 id="2-GCD-的优势"><a href="#2-GCD-的优势" class="headerlink" title="2. GCD 的优势"></a>2. GCD 的优势</h4><ul>
+<li>GCD是苹果公司为多核的并行运算提出的解决方案</li>
+<li>GCD会自动利用更多的CPU内核（比如双核、四核）</li>
+<li>GCD会自动管理线程的生命周期（创建线程、调度任务、销毁线程）</li>
+<li><p>程序员只需要告诉GCD想要执行什么任务，不需要编写任何线程管理代码</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/12/12/swift-gcd/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mybadge.vip/2018/08/12/storyboard/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="mybadge">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="mybadge">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/12/storyboard/" itemprop="url">
+                  iOS StoryBoard 优雅创建控制器方式
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2018-08-12 22:22:22" itemprop="dateCreated datePublished" datetime="2018-08-12T22:22:22+08:00">2018-08-12</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2018-12-12 22:24:55" itemprop="dateModified" datetime="2018-12-12T22:24:55+08:00">2018-12-12</time>
+              
+            
+          </span>
+
           
-            <h2 id="iOS-StoryBoard-优雅创建控制器方式"><a href="#iOS-StoryBoard-优雅创建控制器方式" class="headerlink" title="iOS StoryBoard 优雅创建控制器方式"></a>iOS StoryBoard 优雅创建控制器方式</h2><p>我的项目中使用到了<strong>StoryBoard</strong>, 我也是喜欢上了这种创建页面的方式, 所见即所得, 每当产品让我改页面的时候, 我都说分分钟就好. 不用在一坨代码中找一个label, 然后修改其颜色, 改颜色几秒钟, 找代码却找了两分钟.</p>
-<h3 id="StoryBoard的优点"><a href="#StoryBoard的优点" class="headerlink" title="StoryBoard的优点"></a>StoryBoard的优点</h3><ul>
-<li>创建快, 容易上手</li>
-<li>页面直观</li>
-<li>页面逻辑关系清晰</li>
-<li>TableViewController的Static.Cell功能</li>
-</ul>
-<h3 id="StoryBoard的缺点"><a href="#StoryBoard的缺点" class="headerlink" title="StoryBoard的缺点"></a>StoryBoard的缺点</h3><ul>
-<li>StoryBoard内容多的时候加载慢, 这个是所有程序员所不能忍受的.</li>
-<li>StoryBoard的segue乱, 页面少的时候还好, 一旦多起来,那个线会像蜘蛛网一样, 蜘蛛网还好, 还是有规律的, StoryBoard就是乱的不得了了</li>
-<li>StoryBoard的segue不灵活, 使用起来比较麻烦, 需要配置segue.identifier, 属于是硬编码, 有时候很容易配置错</li>
-<li>页面间传递参数的时候麻烦, 一个方法里写跳转逻辑, 另一个方法里写参数传递, 一个控制中多个跳转的时候, 还要判断segue.identifier 这种写法我真的是受不了.</li>
-<li>UIStoryBoard方式创建麻烦, 创建控制器之前先创建一个UIStoryBoard对象, 然后在根据StoryBoard.identifier去创建, 标识符的配置,也是硬编码.</li>
-</ul>
-<h3 id="优雅的使用StoryBoard"><a href="#优雅的使用StoryBoard" class="headerlink" title="优雅的使用StoryBoard"></a>优雅的使用StoryBoard</h3><p>基于以上的啰嗦, 我在想是不是可以, 像纯代码创建控制器的方式那样创建StoryBoard的VC呢, 像 CustomViewController.creatVC() 这样是不是就和原来的用法一样了, 既然想到了, 那就去实现以下吧, 正好可以用Swift来实现一下. 想要的效果</p>
-<pre><code>let vc = CustomViewController.creatVC()
-vc.model = model
-navigationController?.pushViewController(vc, animated: true)
-</code></pre><h3 id="我的思路"><a href="#我的思路" class="headerlink" title="我的思路"></a>我的思路</h3><ul>
-<li>分模块拆分StoryBoard, 这样可以减少StoryBoard的体积, 避免加载慢的问题</li>
-<li>segue只是做业务之间的逻辑显示, 不用它来做跳转, 或者不用它</li>
-<li><p>StoryBoard.identifier的约定, 约定所有的StoryBoard.identifier为控制器类名, 方便统一创建VC, 也不用纠结叫什么, 主要也是怕失误的时候写错, 我一般是写上类名的时候, 直接copy一下类名放到identifier上.</p>
-<pre><code>let sb = UIStoryboard(name: &quot;storyBoardName&quot;, bundle: nil)
-   let vc = sb.instantiateViewController(withIdentifier: &quot;storyboardId&quot;) as! CustomerController
-</code></pre></li>
-<li>根据以上代码分析出需要, storyBoardName, storyboardId, 两个变量, storyboardId就是类名, 可以直接通过类名获得, 但是这个storyBoardName怎么获取呢?</li>
-<li>通过属性, 好像是不行, 因为创建控制之前还没有属性, 类属性, 我也不想每个控制器都写一下, 而且也觉得不是一个好的方法, 接下来我就想到了用协议, 协议中定义一个方法, 让它返回StoryBoard name.</li>
-</ul>
-<h3 id="我的实现"><a href="#我的实现" class="headerlink" title="我的实现"></a>我的实现</h3><pre><code>/// 这里可以把StoryBoard以模块划分,
-enum StoryBoardName: String {
-    case none = &quot;&quot;
-    case main = &quot;Main&quot;
-    case project = &quot;Project&quot;
-    case login = &quot;Login&quot;
-    case other = &quot;Other&quot;
-    case mine = &quot;Mine&quot;
-}
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/iOS/" itemprop="url" rel="index"><span itemprop="name">iOS</span></a></span>
 
-protocol StoryBoardDelegate {
-    static func storyBoardName() -&gt; StoryBoardName
-}
-
-protocol ClassNameDelete {
-    static func className() -&gt; String
-}
-
-
-extension UIViewController: ClassNameDelete {
-    static func className() -&gt; String {
-        if let className = classForCoder().description().components(separatedBy: &quot;.&quot;).last {
-            return className
-        } else {
-            return classForCoder().description().components(separatedBy: &quot;.&quot;).first!
-        }
-    }
-}
-
-
-extension BaseViewController {
-
-    /// 通用创建VC方式
-    class func creatVC() -&gt; Self {
-
-        let type = self.storyBoardName()
-        if type == .none {
-            return self.init()
-        } else {
-            if let vc = UIStoryboard.initVC(classType: self) {
-                return vc
-            } else {
-                debugPrint(&quot;className=\(className())创建失败&quot;)
-                return self.init()
-            }
-        }
-    }
-}
-
-extension UIStoryboard {
-    /// 根据类名创建 由StoryBoard 创建的控制器.
-    class func initVC&lt;T&gt;(classType: T.Type) -&gt; T? where T: ClassNameDelete, T: StoryBoardDelegate {
-        let name = T.storyBoardName()
-        let sb = UIStoryboard.init(name: name.rawValue, bundle: nil)
-        let vc = sb.instantiateVC(classType: classType)
-        return vc
-    }
-
-    func instantiateVC&lt;T&gt;(classType: T.Type) -&gt; T? where T: ClassNameDelete {
-        let className = T.className()
-        let vc = instantiateViewController(withIdentifier: className)
-        return vc as? T
-    }
-}
-</code></pre><h3 id="具体使用"><a href="#具体使用" class="headerlink" title="具体使用"></a>具体使用</h3><pre><code>/// 在基类中实现这个协议
-class BaseViewController: UIViewController, StoryBoardDelegate {
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-    }
-
-    class func storyBoardName() -&gt; StoryBoardName {
-        return .none
-    }
-} 
-
-/// 子类中实现, 若是纯代码方式创建则不需要实现这个方法.
-class TestView1Controller: BaseViewController {
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        title = &quot;TestView1&quot;
-    }
-
-    override static func storyBoardName() -&gt; StoryBoardName {
-        return .main
-    }
-
-    @IBAction func btnToTest2Action(_ sender: UIButton) {
-        let vc = TestView2Controller.creatVC()
-        navigationController?.pushViewController(vc, animated: true)
-    }
-}
-</code></pre><h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>自我感觉使用起来比较方便, 若是谁有更好的方式, 或可以优化的地方, 欢迎交流.<br><a href="https://github.com/mybadge/CreatVCDemo" target="_blank" rel="noopener">代码Demo</a></p>
+                
+                
+              
+            </span>
+          
 
           
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          iOS StoryBoard 优雅创建控制器方式我的项目中使用到了StoryBoard, 我也是喜欢上了这种创建页面的方式, 所见即所得, 每当产品让我改页面的时候, 我都说分分钟就好. 不用在一坨代码中找一个label, 然后修改其颜色, 改颜色几秒钟, 找代码却找了两分钟.
+StoryBoard
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/08/12/storyboard/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -708,45 +774,17 @@ class TestView1Controller: BaseViewController {
       
         
           
-            <p>在iOS开发中 block 是一块重要的知识, 通过对他进行深入的理解, 可以使我们的能力更上一层楼, 下面让我们看一下 block 到底是什么</p>
-<h3 id="Block-的本质"><a href="#Block-的本质" class="headerlink" title="Block 的本质"></a>Block 的本质</h3><p>Block 就是一个里面存储了指向函数体中包含定义 block 时的代码块的函数指针，以及 block 外部上下文变量等信息的结构体</p>
-<h3 id="Block是Objc对象吗"><a href="#Block是Objc对象吗" class="headerlink" title="Block是Objc对象吗"></a>Block是Objc对象吗</h3><p>答案: 是的, 我们可以通过object_getClass 来获取对象的class</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">int a = 10;</span><br><span class="line">void (^block)(void) = ^&#123;</span><br><span class="line">    NSLog(@&quot;a=%d&quot;, a);</span><br><span class="line">&#125;;</span><br><span class="line">    </span><br><span class="line">NSLog(@&quot;%@&quot;, object_getClass(block));</span><br><span class="line">Class tmpClass = class_getSuperclass(object_getClass(block));</span><br><span class="line">while (tmpClass) &#123;</span><br><span class="line">    NSLog(@&quot;%@&quot;, tmpClass);</span><br><span class="line">    tmpClass = class_getSuperclass(tmpClass);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>运行结果</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">_NSMallocBlock__</span><br><span class="line">__NSMallocBlock</span><br><span class="line">NSBlock</span><br><span class="line">NSObject</span><br></pre></td></tr></table></figure>
-<h3 id="Block-的内存分布"><a href="#Block-的内存分布" class="headerlink" title="Block 的内存分布"></a>Block 的内存分布</h3><ul>
-<li>让我们从下面几个方面剖析<ol>
-<li>不带有外部变量的block内存    </li>
-<li>带有外部变量的block内存</li>
-<li>copy、weak、strong修饰的block内存</li>
-<li>函数参数的block</li>
-</ol>
-</li>
-</ul>
-<h4 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h4><ul>
-<li>没有外部变量的时候，所有的block都是globalBlock: 包括有函数参数、在block里来定义变量；都是属于没有外部变量</li>
-</ul>
-<ul>
-<li>有外部变量<ol>
-<li>有全局变量、全局静态变量、局部静态变量  (block属于GlobalBlock类型)</li>
-<li>有普通外部变量：非对象，对象（如果block是strong或者copy修饰的，block是mallocBlock类型； weak修饰的，block是stackBlock类型）</li>
-<li>把block作为自定义函数的参数：block(包含了外部变量的)是属于NSStackBlock，栈区的； </li>
-<li>当你把一个栈区的block 赋值给一个strong的blockOne，blockOne就在堆区</li>
-</ol>
-</li>
-</ul>
-<ul>
-<li>总结来说：block属于哪个种类，跟block里有没有外部变量、block被什么修饰 相关！！</li>
-</ul>
-<h3 id="Block里有外部变量"><a href="#Block里有外部变量" class="headerlink" title="Block里有外部变量"></a>Block里有外部变量</h3><ul>
-<li>当 block 调用 copy 方法时，如果 block 在栈上，会被拷贝到堆上；</li>
-<li>当 block 作为函数返回值返回时，编译器自动将 block 作为 _Block_copy 函数，效果等同于 block 直接调用 copy 方法；</li>
-<li>当 block 被赋值给 __strong id 类型的对象或 (非weak)成员变量时，编译器自动将 block 作为 _Block_copy 函数，效果等同于 block 直接调用 copy 方法；</li>
-<li>当 block 作为参数被传入方法名带有 usingBlock 的 Cocoa Framework 方法或 GCD 的 API 时。这些方法会在内部对传递进来的 block 调用 copy 或 _Block_copy 进行拷贝;</li>
-</ul>
-<h3 id="结束"><a href="#结束" class="headerlink" title="结束"></a>结束</h3><p>目前先了解这里.</p>
-
-          
+          在iOS开发中 block 是一块重要的知识, 通过对他进行深入的理解, 可以使我们的能力更上一层楼, 下面让我们看一下 block 到底是什么
+Block 的本质Block 就是一个里面存储了指向函数体中包含定义 block 时的代码块的函数指针，以及 block 外部上下文变量等信息的结构体
+B
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/07/15/block的深度理解/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -914,15 +952,17 @@ class TestView1Controller: BaseViewController {
       
         
           
-            <p>有点无从下手, 有时考虑的很多, 会错失很多机会, 活在当下, 说走就走, 男子汉就要洒脱.</p>
-<h2 id="为什么搭建博客"><a href="#为什么搭建博客" class="headerlink" title="为什么搭建博客"></a>为什么搭建博客</h2><p>想记录一下自己的成长, 不想在这么浑浑噩噩. 开始有点难, 但不开始就永远没有开始.</p>
-<h3 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h3><p>没有目标, 就没有动力, 虽然已经过了大半年, 但是想到后半年才是做大事的, 目标一定要有的,  计划产出10篇技术文章, 以总结自己的技术积累</p>
-<h3 id="关于自己"><a href="#关于自己" class="headerlink" title="关于自己"></a>关于自己</h3><p>一个想改变自己的iOS开发工程师.</p>
-<h3 id="期待"><a href="#期待" class="headerlink" title="期待"></a>期待</h3><p>成为一个追求的人, 有自己的底线, 有自己的成就, 有自己的事业.</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ Blog start</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="noopener">Deployment</a></p>
-
-          
+          有点无从下手, 有时考虑的很多, 会错失很多机会, 活在当下, 说走就走, 男子汉就要洒脱.
+为什么搭建博客想记录一下自己的成长, 不想在这么浑浑噩噩. 开始有点难, 但不开始就永远没有开始.
+目标没有目标, 就没有动力, 虽然已经过了大半年, 但是想到后半年才是做大事的, 目标一定要有的,  计划
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/07/12/First/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1090,17 +1130,15 @@ class TestView1Controller: BaseViewController {
       
         
           
-            <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="noopener">Deployment</a></p>
-
-          
+          Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in 
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/07/11/hello-world/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1180,7 +1218,7 @@ class TestView1Controller: BaseViewController {
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">4</span>
+                    <span class="site-state-item-count">5</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
